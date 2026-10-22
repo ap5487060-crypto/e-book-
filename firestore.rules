@@ -1,0 +1,50 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Books collection: Anyone can read, authenticated users / admin can write
+    match /ebooks/{bookId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+    
+    // Site settings & store config: Anyone can read, authenticated admin can write
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Orders / Inquiries / Payment clicks tracking:
+    // Anyone can create an entry (when user clicks buy or submits inquiry), authenticated users can read/manage
+    match /inquiries/{inquiryId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /analytics_events/{eventId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+    
+    // Notifications collection:
+    // Anyone can trigger notification (e.g. "someone purchased/interested"), authenticated admin can read/manage
+    match /notifications/{notifId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+    
+    // Reviews collection: Anyone can read and add review, admin can moderate
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if request.auth != null;
+    }
+
+    // Default fallback rule
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

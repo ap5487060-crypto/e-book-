@@ -1,0 +1,6 @@
+{
+  "name": "BookVerse 3D - Premium eBook Store & Admin",
+  "description": "Interactive 3D eBook marketplace with dynamic payment gateways, sample PDF preview reader, real-time Firebase integration, and comprehensive admin suite.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
